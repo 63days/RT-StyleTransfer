@@ -90,9 +90,9 @@ class LossNet(nn.Module):
 
     def forward(self, y_hat, y):
         content_loss, style_loss = 0, 0
-        for name, module in self.model.named_modules():
-            y_hat = self.model(y_hat)
-            y = self.model(y)
+        for name, module in self.model.named_children():
+            y_hat = module(y_hat)
+            y = module(y)
 
             if name in self.content_layers:
                 content_loss += F.mse_loss(y_hat, y)
